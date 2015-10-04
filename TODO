@@ -1,0 +1,14 @@
+This file contains all of the things I left for later...
+
+	Of course, the big one is that all of this code
+	is meant for 3D. Ideally, dimension should be compile
+	or run time determined. This is a windmill for another day.
+
+
+	Eh, I guess I should put "Finish this document" in here, 
+	but that feels bad. I've been working with recursive methods
+	perhaps a bit too much...
+
+	(10/3) Where I left off was: 9tc.c & Queries.c 
+	I was process of implementing/experimenting the kNN
+	query. 
