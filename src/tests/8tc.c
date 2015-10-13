@@ -3,7 +3,7 @@
 int main ()
 {
 	FILE *inFile;
-	inFile = fopen("target/test_output", "r");
+	inFile = fopen("target/processed_output", "r");
 
 	if (inFile <= 0) {
 		fprintf(stdout, "Input File doesn't exist\n");

@@ -176,17 +176,12 @@ void produceLatAddr (EucVec *inVec, LatAddr *outAddr)
 	getBasisVectorMatrix(a, 1.0);
 	gauss_eliminate(a, b, sol, 3);
 
-	int i;
-	int min = 0;
-	for (i = 0; i < 3; i++)
-	{
-		min = (round(sol[i]) < min ? (round(sol[i])) : (min));
-	}
+	outAddr->a = round(sol[0]);
+	outAddr->b = round(sol[1]);
+	outAddr->c = round(sol[2]);
+	outAddr->d = 0;
 
-	outAddr->a = round(sol[0]) - min;
-	outAddr->b = round(sol[1]) - min;
-	outAddr->c = round(sol[2]) - min;
-	outAddr->d = -min;
+	cleanupLatAddr(outAddr);
 }
 
 // NOTE: this modifies inAddr in place

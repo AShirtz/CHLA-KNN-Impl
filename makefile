@@ -9,7 +9,8 @@ TEST_CASE_OBJS = 	1tc.o \
 			6tc.o \
 			7tc.o \
 			8tc.o \
-			9tc.o
+			9tc.o \
+			10tc.o 
 
 UTIL_OBJS = 		Utils.o \
 			Objects.o \
@@ -35,6 +36,7 @@ testCases: $(TEST_CASE_OBJS) $(UTIL_OBJS)
 	$(CC) $(CFLAGS) 7tc.o $(UTIL_OBJS) -o target/test/7tc -lm
 	$(CC) $(CFLAGS) 8tc.o $(UTIL_OBJS) -o target/test/8tc -lm
 	$(CC) $(CFLAGS) 9tc.o $(UTIL_OBJS) -o target/test/9tc -lm
+	$(CC) $(CFLAGS) 10tc.o $(UTIL_OBJS) -o target/test/10tc -lm
 
 releaseFiles: $(RELEASE_FILES) $(UTIL_OBJS)
 	$(CC) $(CFLAGS) Preprocess.o $(UTIL_OBJS) -o target/release/Preprocess -lm

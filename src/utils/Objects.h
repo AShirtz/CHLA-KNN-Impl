@@ -20,12 +20,8 @@ typedef struct
 } EucVec;
 
 void printEucVec (FILE* out, EucVec *vec);
-
 void scaleEucVec(EucVec* vec, double scale);
-
-// While it is funky, output can be the same location as either of the operators...
 void addEucVec(EucVec* opA, EucVec* opB, EucVec* output);
-
 double getEucVecMagnitude (EucVec * vec);
 
 typedef struct
@@ -37,6 +33,7 @@ typedef struct
 } LatAddr;
 
 void printLatAddr (FILE* out, LatAddr *lAddr);
+void cleanupLatAddr (LatAddr *lAddr);
 void scaleLatAddr (LatAddr *lAddr, int scale);
 void addLatAddr (LatAddr *opA, LatAddr *opB, LatAddr *output);
 

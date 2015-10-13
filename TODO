@@ -12,3 +12,29 @@ This file contains all of the things I left for later...
 	(10/3) Where I left off was: 9tc.c & Queries.c 
 	I was process of implementing/experimenting the kNN
 	query. 
+
+
+(10/3)
+	Came back to it today, doing some amount of prep for the kNN impl,
+	Ran some of the tests, as I added a cleanupLatAddr function, and found some
+	tests that were SegFaulting. Probably not an issue, just file names or
+	something, but I should look into it and make it so that it doesn't do that.
+	Cosmetic reasons yeah? 
+		After some digging, I found that it is because 6tc.c doesn't use
+		the data members built into DataPointEntry, so writing/reading
+		doesn't work with the new version of the object...
+
+	So I'm going to bed again, odd how I have to continue doing that.
+	Anywho, I'm about half done with the kNN impl, but it's not in the Queries.c
+	file, as I spent all of tonight chasing ghosts and getting a context. See
+	the src/test/10tc.c file to see how to do the first half of the kNN callback.
+	I have the bounding volume and common prefix length finding. I should do 
+	a little bit of tree behavior cleanup next.
+
+	Specifically, I currently have the two functions nodeInsert and nodeTraverse,
+	which travel along a CanAddr and flood under the given node. These two behaviors
+	have more uses than is currently allowed so they should be refactored into a
+	more general form. As an example, nodeInsert becomes nodeTraverse and nodeTraverse
+	becomes nodeFlood. The new function nodeTraverse hase callbacks for the following
+	tree navigation events; intermediate node hit, leaf node hit, depth expended, etc.
+	What I am going for here, is a general use function for tree navigation...

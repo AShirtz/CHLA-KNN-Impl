@@ -5,6 +5,12 @@ int main ()
 	FILE *inFile;
 	inFile = fopen("target/processed_output", "r");
 
+	if (inFile <= 0)
+	{
+		fprintf(stderr, "No Input File\n");
+		exit(-1);
+	}
+
 	int ret = 0;
 	
 	Node *rootNode;

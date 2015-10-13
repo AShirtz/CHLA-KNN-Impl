@@ -35,13 +35,8 @@ void printLatAddr (FILE* out, LatAddr *lAddr)
 	fprintf(out, "LatAddr:(%i, %i, %i, %i)", lAddr->a, lAddr->b, lAddr->c, lAddr->d);
 }
 
-void scaleLatAddr (LatAddr *lAddr, int scale)
+void cleanupLatAddr (LatAddr *lAddr)
 {
-	lAddr->a *= scale;
-	lAddr->b *= scale;
-	lAddr->c *= scale;
-	lAddr->d *= scale;
-
 	int min = lAddr->a;
 	min = (min < lAddr->b) ? (min) : (lAddr->b);
 	min = (min < lAddr->c) ? (min) : (lAddr->c);
@@ -53,6 +48,16 @@ void scaleLatAddr (LatAddr *lAddr, int scale)
 	lAddr->d -= min;
 }
 
+void scaleLatAddr (LatAddr *lAddr, int scale)
+{
+	lAddr->a *= scale;
+	lAddr->b *= scale;
+	lAddr->c *= scale;
+	lAddr->d *= scale;
+
+	cleanupLatAddr(lAddr);
+}
+
 // Just like the addEucVec function, output can be either operand
 void addLatAddr (LatAddr *opA, LatAddr *opB, LatAddr *output)
 {
@@ -61,15 +66,7 @@ void addLatAddr (LatAddr *opA, LatAddr *opB, LatAddr *output)
 	output->c = opA->c + opB->c;
 	output->d = opA->d + opB->d;
 
-	int min = output->a;
-	min = (min < output->b) ? (min) : (output->b);
-	min = (min < output->c) ? (min) : (output->c);
-	min = (min < output->d) ? (min) : (output->d);
-
-	output->a -= min;
-	output->b -= min;
-	output->c -= min;
-	output->d -= min;
+	cleanupLatAddr(output);
 }
 
 void printTuple (FILE* out, Tuple *t) 
