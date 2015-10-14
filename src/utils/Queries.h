@@ -13,7 +13,7 @@ void testCallBack (Node *curNd, unsigned int depth, void *params);
 typedef struct
 {
 	unsigned int maxSearchNum;
-	unsigned int searchDist;
+	unsigned int radius;
 	Node *rootNode;
 } kNNParams;
 void kNNCallBack (Node *curNd, unsigned int depth, void *params);

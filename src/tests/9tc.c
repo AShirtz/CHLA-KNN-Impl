@@ -28,7 +28,11 @@ int main ()
 		}
 	} while (ret > 0);
 
-	
+	kNNParams params;
+	params.radius = 5;
+	params.rootNode = rootNode;
+
+	nodeTraverse(rootNode, 0, &params, kNNCallBack);
 
 	fclose (inFile);
 }
