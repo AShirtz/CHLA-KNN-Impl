@@ -19,10 +19,10 @@ typedef struct
 	double z;
 } EucVec;
 
-void printEucVec (FILE* out, EucVec *vec);
-void scaleEucVec(EucVec* vec, double scale);
-void addEucVec(EucVec* opA, EucVec* opB, EucVec* output);
-double getEucVecMagnitude (EucVec * vec);
+void printEucVec 		(FILE* out, EucVec *vec);
+void scaleEucVec		(EucVec* vec, double scale);
+void addEucVec			(EucVec* opA, EucVec* opB, EucVec* output);
+double getEucVecMagnitude 	(EucVec * vec);
 
 typedef struct
 {
@@ -32,17 +32,18 @@ typedef struct
 	int d;
 } LatAddr;
 
-void printLatAddr (FILE* out, LatAddr *lAddr);
-void cleanupLatAddr (LatAddr *lAddr);
-void scaleLatAddr (LatAddr *lAddr, int scale);
-void addLatAddr (LatAddr *opA, LatAddr *opB, LatAddr *output);
+void printLatAddr 		(FILE* out, LatAddr *lAddr);
+void cleanupLatAddr 		(LatAddr *lAddr);
+void scaleLatAddr 		(LatAddr *lAddr, int scale);
+void addLatAddr 		(LatAddr *opA, LatAddr *opB, LatAddr *output);
+void applyBMatrixToLatAddr 	(LatAddr *inAddr, LatAddr *outAddr);
 
 typedef struct
 {
 	unsigned int val : 4;
 } Tuple;
 
-void printTuple(FILE* out, Tuple *t);
+void printTuple		(FILE* out, Tuple *t);
 
 typedef struct
 {
@@ -50,7 +51,7 @@ typedef struct
 	Tuple addr[MAX_CAN_ADDR_LEN];
 } CanAddr;
 
-void printCanAddr (FILE* out, CanAddr *cAddr);
+void printCanAddr 	(FILE* out, CanAddr *cAddr);
 
 typedef struct
 {

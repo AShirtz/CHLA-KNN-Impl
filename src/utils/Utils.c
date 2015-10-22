@@ -221,3 +221,35 @@ unsigned int produceCanAddr (LatAddr *inAddr, CanAddr *outAddr)
 	}
 	return i;
 }
+
+void convertTupleToLatAddr (Tuple *tup, LatAddr *outAddr)
+{
+	outAddr->a = (tup->val >> 0) & 1;
+	outAddr->b = (tup->val >> 1) & 1;
+	outAddr->c = (tup->val >> 2) & 1;
+	outAddr->d = (tup->val >> 3) & 1;
+	cleanupLatAddr(outAddr);
+}
+
+void convertCanAddrToLatAddr (CanAddr *cAddr, LatAddr *lAddr)
+{
+	lAddr->a = 0;
+	lAddr->b = 0;
+	lAddr->c = 0;
+	lAddr->d = 0;
+
+	LatAddr tmp, cpy;	
+	int i, j;
+
+	for (i = MAX_CAN_ADDR_LEN-1; i >= 0; i--)
+	{
+		convertTupleToLatAddr (&(cAddr->addr[i]), &tmp);
+		for (j = 0; j < (MAX_CAN_ADDR_LEN - (i+1)); j++)
+		{
+			cpy = tmp;
+			applyBMatrixToLatAddr(&cpy, &tmp);
+		}
+
+		addLatAddr(lAddr, &tmp, lAddr);
+	}
+}

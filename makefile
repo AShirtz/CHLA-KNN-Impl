@@ -19,12 +19,17 @@ UTIL_OBJS = 		Utils.o \
 
 RELEASE_FILES = 	Preprocess.o
 
-all: testCases
+WORKSPACE = 		workspace.o
 
-publish: releaseFiles
+all: workspace
 
 clean: 
 	rm *.o target/test/* target/release/* 
+
+workspace: workspaceFile
+	
+
+publish: releaseFiles
 
 testCases: $(TEST_CASE_OBJS) $(UTIL_OBJS)
 	$(CC) $(CFLAGS) 1tc.o $(UTIL_OBJS) -o target/test/1tc -lm
@@ -41,6 +46,9 @@ testCases: $(TEST_CASE_OBJS) $(UTIL_OBJS)
 releaseFiles: $(RELEASE_FILES) $(UTIL_OBJS)
 	$(CC) $(CFLAGS) Preprocess.o $(UTIL_OBJS) -o target/release/Preprocess -lm
 
+workspaceFile: $(WORKSPACE) $(UTIL_OBJS)
+	$(CC) $(CFLAGS) workspace.o $(UTIL_OBJS) -o target/test/workspace -lm
+	
 %.o: src/%.c
 	$(CC) $(CFLAGS) -c $(CFLAGS) $< -o $@
 

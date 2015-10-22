@@ -69,6 +69,16 @@ void addLatAddr (LatAddr *opA, LatAddr *opB, LatAddr *output)
 	cleanupLatAddr(output);
 }
 
+void applyBMatrixToLatAddr (LatAddr *inAddr, LatAddr *outAddr)
+{
+	outAddr->a = (2*inAddr->a)-(inAddr->d);
+	outAddr->b = (2*inAddr->b)-(inAddr->a);
+	outAddr->c = (2*inAddr->c)-(inAddr->b);
+	outAddr->d = (2*inAddr->d)-(inAddr->c);
+
+	cleanupLatAddr(outAddr);
+}
+
 void printTuple (FILE* out, Tuple *t) 
 {
 	fprintf(out, "%u, ", (t->val+15)%15);

@@ -38,3 +38,30 @@ This file contains all of the things I left for later...
 	becomes nodeFlood. The new function nodeTraverse hase callbacks for the following
 	tree navigation events; intermediate node hit, leaf node hit, depth expended, etc.
 	What I am going for here, is a general use function for tree navigation...
+
+(10/21)
+	Another break, as things have been a tad hectic. After running some tests
+	to get an idea of runtime, I decided that I would need something I am referring
+	to as 'Selective Flooding'. I feel that this may already be a known behavior, 
+	whether it be through this name or not. The basic idea behind this is to determine
+	which branches of the tree to traverse. Some branches can be ignored altogether, 
+	some will have all sub-branches visited fully. There are 3 possible outcomes;
+	No Flooding, Full Flooding, and Selective Flooding. The condition that determines
+	which behavior is applied to which child is as follows: A tile can be thought of 
+	as an approximation of a ball, which will have a radius. We are attempting to 
+	capture all leaf nodes that fall within a defined ball. Comparing the distance
+	from the center of our search ball to the center of the tile's ball against 
+	the radius of the tiles ball added to the radius of our search ball, we can 
+	have a reasonable assurance that the tile in question does not contain any data
+	point that will be contained in our search ball.
+
+	I identified a few functions that would be required for this process, and have
+	implemented some of them. These include: convertTupleToLatAddr, 
+	convertCanAddrtToLatAddr, applyBMatrixToLatAddr.
+
+	What yet remains to be implemented as far as Selective Flooding goes are;
+	Selective Flooding selector (Which version of Flooding should be applied 
+	to this child?) and an appropriate tree traversal function that uses the 
+	Selective Flooding selector.
+
+	Afterwards, the implementation of kNN can be written.
