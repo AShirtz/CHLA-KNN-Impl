@@ -8,14 +8,29 @@
 
 #include "Utils.h"
 
+#define NUM_NEIGHBORS 10
+
 void testCallBack (Node *curNd, unsigned int depth, void *params);
 
 typedef struct
 {
-	unsigned int maxSearchNum;
-	unsigned int radius;
-	Node *rootNode;
+	unsigned int 	searchRadius;
+	Node 		*rootNode;
+	FILE		*outputFile;
 } kNNParams;
-void kNNCallBack (Node *curNd, unsigned int depth, void *params);
 
+typedef struct
+{
+	DataPointEntry 	*opDPE;
+	unsigned int	neighborCount;
+	double 		dists[NUM_NEIGHBORS];
+	DataPointEntry 	*neighbors[NUM_NEIGHBORS];
+} kNNWorkspace;
+
+void initializekNNWorkspace (kNNWorkspace *workspace);
+void printkNNWorkspace (FILE *outFile, kNNWorkspace *workspace);
+void kNNCallBack (Node *curNd, unsigned int depth, void *params);
+void updatekNNWorkspaceCallBack (Node *curNd, unsigned int depth, void *params);
+
+void nodeCanAddrCheckCB (Node *curNd, unsigned int depth, void *params);
 #endif

@@ -6,7 +6,7 @@ int main ()
 	FILE *outFile;
 	
 	// TODO: make it so these are params, maybe getOpt()?
-	inFile = fopen ("input/test_input.csv", "r");
+	inFile = fopen ("input/test_full_set.csv", "r");
 	outFile = fopen ("target/processed_output", "w");
 
 	unsigned int longestAddr = 0;

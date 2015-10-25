@@ -69,6 +69,13 @@ void addLatAddr (LatAddr *opA, LatAddr *opB, LatAddr *output)
 	cleanupLatAddr(output);
 }
 
+double getLatAddrMagnitude (LatAddr *lAddr)
+{
+	EucVec tmp;
+	evalBasisLinearCombo (lAddr->a, lAddr->b, lAddr->c, lAddr->d, &tmp);
+	return getEucVecMagnitude(&tmp);
+}
+
 void applyBMatrixToLatAddr (LatAddr *inAddr, LatAddr *outAddr)
 {
 	outAddr->a = (2*inAddr->a)-(inAddr->d);

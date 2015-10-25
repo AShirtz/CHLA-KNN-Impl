@@ -16,6 +16,16 @@ int main ()
 	Node *rootNode;
 	rootNode = calloc(1, sizeof(Node));
 
+	CanAddr tmp;
+	int i;
+	
+	for (i = 0; i < MAX_CAN_ADDR_LEN; i++)
+	{
+		tmp.addr[i].val = 0;
+	}
+
+	rootNode->cAddr = tmp;
+
 	do
 	{
 		DataPointEntry *dpe;
@@ -28,11 +38,15 @@ int main ()
 		}
 	} while (ret > 0);
 
+	fclose (inFile);
+
+	FILE *outFile;
+	outFile = fopen ("target/kNN_output", "w");
+
 	kNNParams params;
-	params.radius = 15;
+	params.searchRadius = 20;
 	params.rootNode = rootNode;
+	params.outputFile = outFile;
 
 	nodeTraverse(rootNode, 0, &params, kNNCallBack);
-
-	fclose (inFile);
 }

@@ -10,7 +10,121 @@ void testCallBack (Node *curNd, unsigned int depth, void *params)
 	fprintf((FILE *)params, "\n\n");
 }
 
+void initializekNNWorkspace (kNNWorkspace *workspace)
+{
+	int i;
+	for (i = 0; i < NUM_NEIGHBORS; i++)
+	{
+		workspace->neighbors[i] = NULL;
+	}
+	workspace->opDPE = NULL;
+	workspace->neighborCount = 0;
+}
+
+void printkNNWorkspace (FILE *outFile, kNNWorkspace *workspace)
+{
+	// TODO: if workspace->neighborCount < NUM_NEIGHBORS do something
+	fprintf (outFile, "~~~~~~~ BEGIN KNN ~~~~~~~\n");
+	printDataPointEntry (outFile, workspace->opDPE);
+	fprintf(outFile, "\n\n");
+	int i;
+	for (i = 0; i < workspace->neighborCount; i++)
+	{
+		printDataPointEntry (outFile, workspace->neighbors[i]);
+		fprintf (outFile, "\n%g\n\n", workspace->dists[i]);
+	}
+	fprintf (outFile, "~~~~~~~ END KNN ~~~~~~~\n");
+	fprintf(outFile, "\n\n");
+}
+
 void kNNCallBack (Node *curNd, unsigned int depth, void *params)
+{
+	kNNWorkspace workspace;
+	initializekNNWorkspace (&workspace);
+	workspace.opDPE = curNd->parkedDPE;
+
+	unsigned int radiusScale = 1;
+
+	while (workspace.neighborCount < NUM_NEIGHBORS)
+	{
+		selectiveFlood	(((kNNParams *)params)->rootNode, 0,
+				&(curNd->parkedDPE->lAddr),
+				((kNNParams *)params)->searchRadius,
+				updatekNNWorkspaceCallBack,
+				&workspace);
+	}
+
+	printkNNWorkspace(((kNNParams *)params)->outputFile, &workspace);
+}
+
+void updatekNNWorkspaceCallBack (Node *curNd, unsigned int depth, void *params)
+{
+	kNNWorkspace *workspace = (kNNWorkspace *) params;
+	DataPointEntry *candidateNeighbor = curNd->parkedDPE;
+
+	if (candidateNeighbor->id == workspace->opDPE->id)
+	{
+		// DPE.id is used for equivalence
+		// One cannot be their own neighbor
+		return;
+	}
+
+	unsigned int i, j;
+
+	for (i = 0; i < workspace->neighborCount; i++)
+	{
+		if (workspace->neighbors[i]->id == candidateNeighbor->id)
+		{
+			// We've already seen this point as a neighbor
+			return;
+		}
+	}
+
+	double dist;
+
+	EucVec cpy = workspace->opDPE->vecAddr;
+	scaleEucVec (&cpy, -1.0);
+	addEucVec (&cpy, &(candidateNeighbor->vecAddr), &cpy);
+
+	dist = getEucVecMagnitude (&cpy);
+
+	for (i = 0; i < NUM_NEIGHBORS; i++)
+	{
+		if (workspace->neighbors[i] == NULL)
+		{
+			workspace->neighbors[i] = candidateNeighbor;
+			workspace->dists[i] = dist;
+			workspace->neighborCount += 1;
+			break;
+		}
+		else if (dist < workspace->dists[i])
+		{
+			for (j = NUM_NEIGHBORS-1; j > i; j--)
+			{
+				workspace->neighbors[j] = workspace->neighbors[j-1];
+				workspace->dists[j] = workspace->dists[j-1];
+			}
+			workspace->neighbors[i] = candidateNeighbor;
+			workspace->dists[i] = dist;
+			workspace->neighborCount = (workspace->neighborCount >= NUM_NEIGHBORS) ? (NUM_NEIGHBORS) : (workspace->neighborCount + 1);
+			break;
+		}
+	}
+}
+
+void nodeCanAddrCheckCB (Node *curNd, unsigned int depth, void *params)
+{
+	fprintf(stdout, "%u\n", depth);
+	printCanAddr(stdout, &(curNd->cAddr));
+	fprintf(stdout, "\n");
+	printCanAddr(stdout, &(curNd->parkedDPE->cAddr));
+	fprintf(stdout, "\n");
+	fprintf(stdout, "\n");
+}
+
+// TODO: this code is old, but may still be useful, requires cleanup though
+/*
+void smallestEnclosingTileCB (Node *curNd, unsigned int depth, void *params)
 {
 	unsigned int radius = ((kNNParams *)params)->radius;
 	LatAddr extrema[8];
@@ -69,3 +183,4 @@ void kNNCallBack (Node *curNd, unsigned int depth, void *params)
 
 	fprintf(stdout, "%u\n", nd->population);
 }
+*/

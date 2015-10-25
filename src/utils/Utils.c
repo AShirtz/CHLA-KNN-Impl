@@ -5,11 +5,13 @@
 	Tree Functions
 */
 
-void allocateChild (Node *curNd, Tuple tup)
+void allocateChild (Node *curNd, Tuple tup, unsigned int depth)
 {
 	if (curNd->children[tup.val] == NULL)
 	{
 		curNd->children[tup.val] = calloc(1, sizeof(Node));
+		curNd->children[tup.val]->cAddr = curNd->cAddr;
+		curNd->children[tup.val]->cAddr.addr[depth] = tup;
 	}
 }
 
@@ -24,15 +26,15 @@ void nodeInsert (Node *curNd, DataPointEntry *dpe, unsigned int depth)
 	if 	(curNd->population == 1)	{ curNd->parkedDPE = dpe; }
 	else if	(curNd->population == 2)
 	{
-		allocateChild	(curNd, curNd->parkedDPE->cAddr.addr[depth]);
+		allocateChild	(curNd, curNd->parkedDPE->cAddr.addr[depth], depth);
 		nodeInsert	(curNd->children[curNd->parkedDPE->cAddr.addr[depth].val], curNd->parkedDPE, depth + 1);
 		curNd->parkedDPE = NULL;
-		allocateChild	(curNd, dpe->cAddr.addr[depth]);
+		allocateChild	(curNd, dpe->cAddr.addr[depth], depth);
 		nodeInsert	(curNd->children[dpe->cAddr.addr[depth].val], dpe, depth + 1);
 	}
 	else
 	{
-		allocateChild	(curNd, dpe->cAddr.addr[depth]);
+		allocateChild	(curNd, dpe->cAddr.addr[depth], depth);
 		nodeInsert	(curNd->children[dpe->cAddr.addr[depth].val], dpe, depth + 1);
 	}
 }
@@ -51,6 +53,49 @@ void nodeTraverse (Node *curNd, unsigned int depth, void *params, pFuncCB *callB
 			if (curNd->children[i] != NULL)
 			{
 				nodeTraverse (curNd->children[i], depth + 1, params, callBack);
+			}
+		}
+	}
+}
+
+void selectiveFlood (Node *curNd, unsigned int depth, LatAddr *center, unsigned int searchRadius, pFuncCB *callBack, void *params)
+{
+	if (curNd->parkedDPE != NULL)
+	{
+		callBack (curNd, depth, params);
+	}
+	else
+	{
+		LatAddr tileCenter;
+		convertCanAddrToLatAddr (&(curNd->cAddr), &tileCenter);
+
+		scaleLatAddr (&tileCenter, -1);
+		addLatAddr (&tileCenter, center, &tileCenter);
+
+		double dist;
+		dist = getLatAddrMagnitude (&tileCenter);
+
+		double tileRadius = pow (3.0, (double) (MAX_CAN_ADDR_LEN - depth));
+
+		if ((dist + tileRadius) < searchRadius)
+		{
+			// call nodeTraverse on this node as all children should be checked
+			nodeTraverse (curNd, depth, params, callBack);
+		}
+		else if ((dist - tileRadius) > searchRadius)
+		{
+			// Do not flood this tile at all
+			return;
+		}
+		else
+		{
+			int i;
+			for (i = 0; i < 15; i++)
+			{
+				if (curNd->children[i] != NULL)
+				{
+					selectiveFlood (curNd->children[i], depth+1, center, searchRadius, callBack, params);
+				}
 			}
 		}
 	}

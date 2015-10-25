@@ -18,9 +18,10 @@ typedef void (pFuncCB) (Node *curNd, unsigned int depth, void *params);
 
 /*	Tree functions	*/
 
-void allocateChild 	(Node *curNd, Tuple tup);
+void allocateChild 	(Node *curNd, Tuple tup, unsigned int depth);
 void nodeInsert 	(Node *curNd, DataPointEntry *dpe, unsigned int depth);
 void nodeTraverse 	(Node *curNd, unsigned int depth, void *params, pFuncCB *callBack);
+void selectiveFlood	(Node *curNd, unsigned int depth, LatAddr *center, unsigned int searchRadius, pFuncCB *callBack, void *params);
 
 /*	Basis Vectors	*/
 

@@ -36,6 +36,7 @@ void printLatAddr 		(FILE* out, LatAddr *lAddr);
 void cleanupLatAddr 		(LatAddr *lAddr);
 void scaleLatAddr 		(LatAddr *lAddr, int scale);
 void addLatAddr 		(LatAddr *opA, LatAddr *opB, LatAddr *output);
+double getLatAddrMagnitude	(LatAddr *lAddr);
 void applyBMatrixToLatAddr 	(LatAddr *inAddr, LatAddr *outAddr);
 
 typedef struct
@@ -47,8 +48,8 @@ void printTuple		(FILE* out, Tuple *t);
 
 typedef struct
 {
-	unsigned int addrLen;
-	Tuple addr[MAX_CAN_ADDR_LEN];
+	unsigned int	addrLen;
+	Tuple		addr[MAX_CAN_ADDR_LEN];
 } CanAddr;
 
 void printCanAddr 	(FILE* out, CanAddr *cAddr);
@@ -65,9 +66,10 @@ void printDataPointEntry (FILE *out, DataPointEntry *dpe);
 
 typedef struct TreeNode
 {
-	DataPointEntry *parkedDPE;
-	unsigned int population;
-	struct TreeNode *children[15];
+	DataPointEntry	*parkedDPE;
+	CanAddr 	cAddr;
+	unsigned int	population;
+	struct TreeNode	*children[15];
 } Node;
 
 #endif
