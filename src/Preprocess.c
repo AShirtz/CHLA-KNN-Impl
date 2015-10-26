@@ -1,13 +1,28 @@
 #include "utils/Utils.h"
 
-int main ()
+int main (int argc, char *argv[])
 {
+	if (argc != 3)
+	{
+		fprintf(stderr, "Usage is: %s inputFileName outputFIleName\n", argv[0]);
+		exit(-1);
+	}
+
 	FILE *inFile;
 	FILE *outFile;
 	
-	// TODO: make it so these are params, maybe getOpt()?
-	inFile = fopen ("input/test_full_set.csv", "r");
-	outFile = fopen ("target/processed_output", "w");
+	inFile = fopen (argv[1], "r");
+	outFile = fopen (argv[2], "w");
+
+	if (inFile <= 0)
+	{
+		fprintf(stderr, "Unable to open input file.\n");
+	}
+
+	if (outFile <= 0)
+	{
+		fprintf(stderr, "Unable to open output file.\n");
+	}
 
 	unsigned int longestAddr = 0;
 

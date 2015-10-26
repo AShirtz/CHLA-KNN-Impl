@@ -17,7 +17,8 @@ UTIL_OBJS = 		Utils.o \
 			FileIO.o \
 			Queries.o
 
-RELEASE_FILES = 	Preprocess.o
+RELEASE_FILES = 	Preprocess.o \
+			kNearestNeighbors.o
 
 WORKSPACE = 		workspace.o
 
@@ -45,6 +46,7 @@ testCases: $(TEST_CASE_OBJS) $(UTIL_OBJS)
 
 releaseFiles: $(RELEASE_FILES) $(UTIL_OBJS)
 	$(CC) $(CFLAGS) Preprocess.o $(UTIL_OBJS) -o target/release/Preprocess -lm
+	$(CC) $(CFLAGS) kNearestNeighbors.o $(UTIL_OBJS) -o target/release/kNearestNeighbors -lm
 
 workspaceFile: $(WORKSPACE) $(UTIL_OBJS)
 	$(CC) $(CFLAGS) workspace.o $(UTIL_OBJS) -o target/test/workspace -lm

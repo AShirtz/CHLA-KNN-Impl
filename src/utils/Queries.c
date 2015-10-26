@@ -23,18 +23,23 @@ void initializekNNWorkspace (kNNWorkspace *workspace)
 
 void printkNNWorkspace (FILE *outFile, kNNWorkspace *workspace)
 {
-	// TODO: if workspace->neighborCount < NUM_NEIGHBORS do something
-	fprintf (outFile, "~~~~~~~ BEGIN KNN ~~~~~~~\n");
-	printDataPointEntry (outFile, workspace->opDPE);
-	fprintf(outFile, "\n\n");
-	int i;
-	for (i = 0; i < workspace->neighborCount; i++)
+	fprintf(outFile, "%u, %g, %g, %g, ", 
+		workspace->opDPE->id, 
+		workspace->opDPE->vecAddr.x, 
+		workspace->opDPE->vecAddr.y, 
+		workspace->opDPE->vecAddr.z);
+
+	unsigned int i;
+	for (i  = 0; i < workspace->neighborCount; i++)
 	{
-		printDataPointEntry (outFile, workspace->neighbors[i]);
-		fprintf (outFile, "\n%g\n\n", workspace->dists[i]);
+		fprintf(outFile, "%u, %g, %g, %g, ", 
+			workspace->neighbors[i]->id, 
+			workspace->neighbors[i]->vecAddr.x, 
+			workspace->neighbors[i]->vecAddr.y, 
+			workspace->neighbors[i]->vecAddr.z);
+		fprintf(outFile, "%g, ", workspace->dists[i]);
 	}
-	fprintf (outFile, "~~~~~~~ END KNN ~~~~~~~\n");
-	fprintf(outFile, "\n\n");
+	fprintf(outFile, "\n");
 }
 
 void kNNCallBack (Node *curNd, unsigned int depth, void *params)
