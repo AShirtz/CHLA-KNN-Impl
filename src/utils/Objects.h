@@ -23,6 +23,7 @@ void printEucVec 		(FILE* out, EucVec *vec);
 void scaleEucVec		(EucVec* vec, double scale);
 void addEucVec			(EucVec* opA, EucVec* opB, EucVec* output);
 double getEucVecMagnitude 	(EucVec * vec);
+bool eucVecsAreEqual		(EucVec *opA, EucVec *opB);
 
 typedef struct
 {

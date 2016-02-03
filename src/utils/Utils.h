@@ -2,6 +2,7 @@
 #define UTILS_H
 
 #include <stdio.h>
+#include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
@@ -9,6 +10,7 @@
 #define round(x) ((x) >= 0 ? (long)((x)+0.5) : (long)((x)-0.5))
 #define MAX_CAN_ADDR_LEN 15
 #define UNIT_TILE_VOLUME (32/(3*(sqrt(3))))
+#define ATOMIC_TILE_RADIUS 0.1
 
 #include "Objects.h"
 #include "FileIO.h"

@@ -17,9 +17,14 @@ void allocateChild (Node *curNd, Tuple tup, unsigned int depth)
 
 void nodeInsert (Node *curNd, DataPointEntry *dpe, unsigned int depth)
 {
-	if (depth > MAX_CAN_ADDR_LEN)
+	if (depth >= (MAX_CAN_ADDR_LEN - 1) && curNd->parkedDPE != NULL)
 	{
-		// TODO: error out
+		if (eucVecsAreEqual(&(dpe->vecAddr), &(curNd->parkedDPE->vecAddr)))
+		{
+			fprintf(stderr, "%u, %u\n", dpe->id, curNd->parkedDPE->id);
+		}
+
+		return;
 	}
 
 	curNd->population += 1;

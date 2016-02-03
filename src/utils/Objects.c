@@ -30,6 +30,13 @@ double getEucVecMagnitude (EucVec *vec)
 	return sqrt((vec->x*vec->x) + (vec->y*vec->y) + (vec->z*vec->z));
 }
 
+bool eucVecsAreEqual (EucVec *opA, EucVec *opB)
+{
+	return (opA->x == opB->x &&
+		opA->y == opB->y &&
+		opA->z == opB->z);
+}
+
 void printLatAddr (FILE* out, LatAddr *lAddr)
 {
 	fprintf(out, "LatAddr:(%i, %i, %i, %i)", lAddr->a, lAddr->b, lAddr->c, lAddr->d);
