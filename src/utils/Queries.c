@@ -93,6 +93,11 @@ void updatekNNWorkspaceCallBack (Node *curNd, unsigned int depth, void *params)
 
 	dist = getEucVecMagnitude (&cpy);
 
+	if (dist > ((kNNParams *) params)->searchRadius)
+	{
+		return;
+	}
+
 	for (i = 0; i < NUM_NEIGHBORS; i++)
 	{
 		if (workspace->neighbors[i] == NULL)
